@@ -111,6 +111,8 @@ if(isset($_POST['submit'])) {
                                    <th>Category</th>
                                    <th>Image</th>
                                    <th>Product ID</th>
+                                   <th>Short Description</th>
+                                   <th>Long Description</th>
                                    <th>Action</th>
                                 </tr>
                                 
@@ -158,11 +160,11 @@ if(isset($_POST['submit'])) {
                                         echo "<td><input type='checkbox' /></td>";
                                         echo "<td>".$row['name']."</td>";
                                         echo "<td>".$row['price']."</td>";
-                                        echo "<td>".$row['id']."</td>";
-                                        echo "<td>".$row['image']."</td>";
-                                        echo "<td>".$row['category']."</td>";
-                                        echo "<td>".$row['shortDes']."</td>";
-                                        echo "<td>".$row['longD']."</td>";
+                                        echo "<td>".$row['product_id']."</td>";
+                                        echo "<td><img src=".$row['image']."></td>";
+                                        echo "<td>".$row['category_id']."</td>";
+                                        echo "<td>".$row['short_desc']."</td>";
+                                        echo "<td>".$row['long_desc']."</td>";
                                 
                                      echo "<td>";
                                             //<!-- Icons -->
