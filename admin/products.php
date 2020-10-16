@@ -19,7 +19,6 @@ if(isset($_POST['submit'])) {
     else {    
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
-    $conn->close();
 }
 
 
@@ -153,7 +152,7 @@ if(isset($_POST['submit'])) {
     
                             if ($no_of_rows > 0) {
                                 // output data of each row
-                                while ($row = mysqli_fetch_assoc($check)) //to fetch a row as an associative array.
+                                while ($row = mysqli_fetch_array($check)) //to fetch a row as an associative array.
                                  { 
                                     
                                     echo "<tr>";
@@ -161,7 +160,9 @@ if(isset($_POST['submit'])) {
                                         echo "<td>".$row['name']."</td>";
                                         echo "<td>".$row['price']."</td>";
                                         echo "<td>".$row['product_id']."</td>";
-                                        echo '<td><img src="data:image/jpeg;base64,'.base64_encode($row['image']).'"/></td>';
+                                        echo "<td>";
+                                        echo '<img src="data:image/jpeg;base64,'.base64_encode($row['image']).'" height="100" width="100"/>';
+                                        echo "</td>";
                                         echo "<td>".$row['category_id']."</td>";
                                         echo "<td>".$row['short_desc']."</td>";
                                         echo "<td>".$row['long_desc']."</td>";
@@ -169,8 +170,8 @@ if(isset($_POST['submit'])) {
                                      echo "<td>";
                                             //<!-- Icons -->
                                             echo "<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
-                                             "<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
-                                             "<a href='#' title='Edit Meta'><img src='resources/images/icons/hammer_screwdriver.png' alt='Edit Meta' /></a>";
+                                            echo"<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
+                                            echo "<a href='#' title='Edit Meta'><img src='resources/images/icons/hammer_screwdriver.png'alt='Edit Meta' /></a>";
                                      echo "</td>";
                                     echo "</tr>";
                                     echo "</tbody>";
@@ -178,7 +179,7 @@ if(isset($_POST['submit'])) {
                             } else {
                                 echo "Record not found..";
                             }  
-                             $conn->close();
+                             
                             ?>
                          </table>
                         
@@ -214,13 +215,13 @@ if(isset($_POST['submit'])) {
                                 </p>
                                 
                                  <p>
-                                    <label>Checkboxes</label>
-                                    <input type="checkbox" name="checkbox1" /> Fashion
-                                    <input type="checkbox" name="checkbox2" /> Ecommerce
-                                    <input type="checkbox" name="checkbox3" /> Shop
-                                    <input type="checkbox" name="checkbox4" /> Handbag
-                                    <input type="checkbox" name="checkbox5" /> Laptop
-                                    <input type="checkbox" name="checkbox6" /> Handbag
+                                    <label>Tags</label>
+                                    <input type="checkbox" name="checkbox1" value="1"/> Fashion
+                                    <input type="checkbox" name="checkbox2" value="2"/> Ecommerce
+                                    <input type="checkbox" name="checkbox3" value="3"/> Shop
+                                    <input type="checkbox" name="checkbox4" value="4"/> Handbag
+                                    <input type="checkbox" name="checkbox5" value="5"/> Laptop
+                                    <input type="checkbox" name="checkbox6" value="6"/> Handbag
                                 </p> 
                                 
                                 <!-- <p>
