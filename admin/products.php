@@ -161,7 +161,7 @@ if(isset($_POST['submit'])) {
                                         echo "<td>".$row['name']."</td>";
                                         echo "<td>".$row['price']."</td>";
                                         echo "<td>".$row['product_id']."</td>";
-                                        echo "<td><img src=".$row['image']."></td>";
+                                        echo '<td><img src="data:image/jpeg;base64,'.base64_encode($row['image']).'"/></td>';
                                         echo "<td>".$row['category_id']."</td>";
                                         echo "<td>".$row['short_desc']."</td>";
                                         echo "<td>".$row['long_desc']."</td>";
@@ -213,16 +213,21 @@ if(isset($_POST['submit'])) {
                                     <input style="background-color:white;" class="text-input large-input" type="file" accept="image/*" id="image" name="imageProduct" required> 
                                 </p>
                                 
-                                <!-- <p>
+                                 <p>
                                     <label>Checkboxes</label>
-                                    <input type="checkbox" name="checkbox1" /> This is a checkbox <input type="checkbox" name="checkbox2" /> And this is another checkbox
-                                </p>
+                                    <input type="checkbox" name="checkbox1" /> Fashion
+                                    <input type="checkbox" name="checkbox2" /> Ecommerce
+                                    <input type="checkbox" name="checkbox3" /> Shop
+                                    <input type="checkbox" name="checkbox4" /> Handbag
+                                    <input type="checkbox" name="checkbox5" /> Laptop
+                                    <input type="checkbox" name="checkbox6" /> Handbag
+                                </p> 
                                 
-                                <p>
+                                <!-- <p>
                                     <label>Radio buttons</label>
                                     <input type="radio" name="radio1" /> This is a radio button<br />
                                     <input type="radio" name="radio2" /> This is another radio button
-                                </p> -->
+                                </p> --> 
                                 
                                 <p>
                                     <label>Categoty</label>              
