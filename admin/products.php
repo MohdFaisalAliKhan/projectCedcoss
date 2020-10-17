@@ -108,7 +108,6 @@ if(isset($_POST['submit'])) {
                                    <th>Name</th>
                                    <th>Price</th>
                                    <th>Category</th>
-                                   <th>Color</th>
                                    <th>Image</th>
                                    <th>Product ID</th>
                                    <th>Short Description</th>
@@ -170,8 +169,8 @@ if(isset($_POST['submit'])) {
                                 
                                      echo "<td>";
                                             //<!-- Icons -->
-                                            echo "<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
-                                            echo"<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
+                                            echo "<a href='edit.php?ID=".$row['product_id']."' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
+                                            echo"<a href='delete.php?ID=".$row['product_id']."' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
                                             echo "<a href='#' title='Edit Meta'><img src='resources/images/icons/hammer_screwdriver.png'alt='Edit Meta' /></a>";
                                      echo "</td>";
                                     echo "</tr>";
@@ -252,6 +251,20 @@ if(isset($_POST['submit'])) {
                                        
                                     </select> 
                                 </p>
+                                <p>
+                                    <label>Colors</label>
+                                    <?php
+                                    $query=mysqli_query($conn, "SELECT * FROM colors");
+                                    $no_of_rows=mysqli_num_rows($query);
+                                    if($no_of_rows>0) {
+                                        while ($row = mysqli_fetch_array($query)) {
+                                            echo '<input type="checkbox" name="checkbox1" value="1"/>';
+                                            echo $row['color_name'];
+
+                                        }
+                                    }
+                                    ?>
+                                </p> 
 
                                 <p>
                                     <label>Short description of Product</label>
