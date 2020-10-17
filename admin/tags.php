@@ -165,8 +165,7 @@ if(isset($_POST['submit'])) {
                                       echo "<td>";
                                             //<!-- Icons -->
                                             echo "<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
-                                            echo "<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
-                                            echo "<a href='#' title='Edit Meta'><img src='resources/images/icons/hammer_screwdriver.png' alt='Edit Meta' /></a>";
+                                            echo "<a href='deleteTags.php?ID=".$row['tag_id']."' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
                                      echo "</td>";
                                     echo "</tr>";
                                 echo "</tbody>";

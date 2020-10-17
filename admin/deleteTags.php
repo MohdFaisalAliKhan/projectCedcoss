@@ -2,12 +2,12 @@
 include('configDatabase2.php');
 if(isset($_GET['ID'])){
     $courseID = $_GET['ID'];
-    $sql_delete = "DELETE FROM products WHERE `product_id` = $courseID";        
+    $sql_delete = "DELETE FROM tags WHERE `tag_id` = $courseID";        
     $result = mysqli_query($conn ,$sql_delete);
      if(mysqli_affected_rows($conn)>0) {
-        header('location:products.php?result=success');
+        header('location:tags.php?result=success');
     } else {
-        header('location:products.php?result=fail');
+        header('location:tags.php?result=fail');
     }
    }
 ?>

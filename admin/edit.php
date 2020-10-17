@@ -2,22 +2,26 @@
 <?php include('sidebar.php'); ?>
 <?php include('configDatabase2.php'); ?>
 <?php
-if(isset($_POST['submit'])) {
-    $name=isset($_POST['nameProduct'])?$_POST['nameProduct']:'';
-    $price=isset($_POST['priceProduct'])?$_POST['priceProduct']:'';
-    $id=isset($_POST['idProduct'])?$_POST['idProduct']:'';
-    $image=isset($_POST['imageProduct'])?$_POST['imageProduct']:'';
-    $category=$_POST['categoryProduct']?$_POST['categoryProduct']:"";
-    $shortDes=isset($_POST['short'])?$_POST['short']:'';
-    $longDes=isset($_POST['long'])?$_POST['long']:'';
+if(isset($_GET['ID'])) {
+    $IDOfEditRow=$_GET['ID'];//This is the id of row that is going to be edited 
+    if(isset($_POST['submit'])) {
     
-    $sql="INSERT INTO products(`name`, `price`, `product_id`, `image`,`category_id`, `short_desc`, `long_desc`) VALUES ('".$name."', '".$price."', '".$id."', '".$image."', '".$category."', '".$shortDes."', '".$longDes."')" ;
-    if ($conn->query($sql) === true) {
-        echo "New record created successfully"; 
-        echo "<span class='input-notification success png_bg'>Successful message</span>";   
-    }  
-    else {    
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $name=isset($_POST['nameProduct'])?$_POST['nameProduct']:'';
+        $price=isset($_POST['priceProduct'])?$_POST['priceProduct']:'';
+        $id=isset($_POST['idProduct'])?$_POST['idProduct']:'';
+        $image=isset($_POST['imageProduct'])?$_POST['imageProduct']:'';
+        $category=$_POST['categoryProduct']?$_POST['categoryProduct']:"";
+        $shortDes=isset($_POST['short'])?$_POST['short']:'';
+        $longDes=isset($_POST['long'])?$_POST['long']:'';
+    
+        $sql="UPDATE products SET `name`='".$name."', `price`='".$price."', `product_id`='".$id."', `image`='".$image."',`category_id`='".$category."', `short_desc`='".$shortDes."', `long_desc`='".$longDes."' WHERE `product_id`='".$IDOfEditRow."' " ;
+        if ($conn->query($sql) === true) {
+            echo "Edited Succesfully successfully"; 
+            echo "<span class='input-notification success png_bg'>Successful message</span>";   
+        }  
+        else {    
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
     }
 }
 

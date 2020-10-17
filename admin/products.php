@@ -6,7 +6,7 @@ if(isset($_POST['submit'])) {
     $name=isset($_POST['nameProduct'])?$_POST['nameProduct']:'';
     $price=isset($_POST['priceProduct'])?$_POST['priceProduct']:'';
     $id=isset($_POST['idProduct'])?$_POST['idProduct']:'';
-    $image=isset($_POST['imageProduct'])?$_POST['imageProduct']:'';
+    $image=addslashes(file_get_contents($_FILES['imageProduct']['tmp_name']));
     $category=$_POST['categoryProduct']?$_POST['categoryProduct']:"";
     $shortDes=isset($_POST['short'])?$_POST['short']:'';
     $longDes=isset($_POST['long'])?$_POST['long']:'';
@@ -171,7 +171,6 @@ if(isset($_POST['submit'])) {
                                             //<!-- Icons -->
                                             echo "<a href='edit.php?ID=".$row['product_id']."' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
                                             echo"<a href='delete.php?ID=".$row['product_id']."' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
-                                            echo "<a href='#' title='Edit Meta'><img src='resources/images/icons/hammer_screwdriver.png'alt='Edit Meta' /></a>";
                                      echo "</td>";
                                     echo "</tr>";
                                     echo "</tbody>";
