@@ -3,7 +3,7 @@
     <?php
         $filename= basename($_SERVER['REQUEST_URI']);     //To ge the file names
         echo $filename;
-        $productmenu=array('products.php','categories.php','tags.php');
+        $productmenu=array('products.php','categories.php','tags.php','colors.php');
     ?>
             
             <h1 id="sidebar-title"><a href="#">Simpla Admin</a></h1>
@@ -38,6 +38,7 @@
                         <!-- Add class "current" to sub menu items also -->
                         <li><a <?php if($filename=='tags.php'):?>class="current"<?php endif; ?>href="tags.php">Manage Tags</a></li>
                         <li><a <?php if($filename=='categories.php'):?>class="current"<?php endif; ?>href="categories.php">Manage Categories</a></li>
+                        <li><a <?php if($filename=='colors.php'):?>class="current"<?php endif; ?>href="colors.php">Manage Colors</a></li>
                     </ul><!-- taki products section me jo choose kren wo select hojae..uspr arrow bankr ajae-->
                 </li>
                 

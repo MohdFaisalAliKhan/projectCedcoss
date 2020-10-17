@@ -108,6 +108,7 @@ if(isset($_POST['submit'])) {
                                    <th>Name</th>
                                    <th>Price</th>
                                    <th>Category</th>
+                                   <th>Color</th>
                                    <th>Image</th>
                                    <th>Product ID</th>
                                    <th>Short Description</th>
@@ -216,12 +217,17 @@ if(isset($_POST['submit'])) {
                                 
                                  <p>
                                     <label>Tags</label>
-                                    <input type="checkbox" name="checkbox1" value="1"/> Fashion
-                                    <input type="checkbox" name="checkbox2" value="2"/> Ecommerce
-                                    <input type="checkbox" name="checkbox3" value="3"/> Shop
-                                    <input type="checkbox" name="checkbox4" value="4"/> Handbag
-                                    <input type="checkbox" name="checkbox5" value="5"/> Laptop
-                                    <input type="checkbox" name="checkbox6" value="6"/> Handbag
+                                    <?php
+                                    $query=mysqli_query($conn, "SELECT * FROM tags");
+                                    $no_of_rows=mysqli_num_rows($query);
+                                    if($no_of_rows>0) {
+                                        while ($row = mysqli_fetch_array($query)) {
+                                            echo '<input type="checkbox" name="checkbox1" value="1"/>';
+                                            echo $row['name'];
+
+                                        }
+                                    }
+                                    ?>
                                 </p> 
                                 
                                 <!-- <p>
@@ -233,13 +239,17 @@ if(isset($_POST['submit'])) {
                                 <p>
                                     <label>Categoty</label>              
                                     <select name="categoryProduct" class="small-input">
-                                        <option value="1">Men clothing</option>
-                                        <option value="2">Women clothing</option>
-                                        <option value="3">Children clothing</option>
-                                        <option value="4">Kitchen</option>
-                                        <option value="5">Home & Lifestyle</option>
-                                        <option value="6">Automobile accesories</option>
-                                        <option value="7">Skin Products</option>
+                                        <?php
+                                        $query=mysqli_query($conn, "SELECT * FROM categories");
+                                        $no_of_rows=mysqli_num_rows($query);
+                                        if($no_of_rows>0) {
+                                            while ($row = mysqli_fetch_array($query)) {
+                                                echo '<option value="1">'.$row['name'].'</option>';
+                                                echo $row['name'];
+                                            }
+                                    }
+                                    ?>
+                                       
                                     </select> 
                                 </p>
 

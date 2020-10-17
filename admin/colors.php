@@ -7,22 +7,15 @@
 <?php include('configDatabase2.php'); ?>
 <?php
 if(isset($_POST['submit'])) {
-    $tagname=isset($_POST['tagName'])?$_POST['tagName']:'';
-    $tagid=isset($_POST['tagId'])?$_POST['tagId']:'';
-
+    $colorname=isset($_POST['colorName'])?$_POST['colorName']:'';
     //TO CHECK FOR DUPLICATE ENTRY
-    $tagNameDuplicate=mysqli_query($conn, "SELECT * FROM tags WHERE `name`='$tagname'"); 
-    $tagIdDuplicate=mysqli_query($conn, "SELECT * FROM tags WHERE `tag_id`='$tagid'");
-    if($tagNameDuplicate->num_rows>0) {
-        trigger_error("This tag name already exists in database", E_USER_WARNING);
+    $colorNameDuplicate=mysqli_query($conn, "SELECT * FROM colors WHERE `color_name`='$colorname'"); 
+    if($colorNameDuplicate->num_rows>0) {
+        trigger_error("This color name already exists in database", E_USER_WARNING);
     }
-    else if($tagIdDuplicate->num_rows>0) {
-        trigger_error("This tag ID already exists", E_USER_WARNING);
-    }
-    
     else {
          //AFTER CHECK FOR DUPLICACY ,NOW THE VALUES WILL BW SENT TO DATABASE
-        $sql="INSERT INTO tags(`name`,`tag_id`) VALUES ('".$tagname."', '".$tagid."')" ;
+        $sql="INSERT INTO colors(`color_name`) VALUES ('".$colorname."')" ;
         if ($conn->query($sql) === true) {
             echo "New record created successfully"; 
             echo "<span class='input-notification success png_bg'>Successful message</span>";   
@@ -113,8 +106,7 @@ if(isset($_POST['submit'])) {
                             <thead>
                                 <tr>
                                    <th><input class="check-all" type="checkbox" /></th>
-                                   <th>Name</th>
-                                   <th>Tag ID</th>
+                                   <th>Color Name</th>
                                    <th>Action</th>
                                 </tr>
                                 
@@ -147,9 +139,9 @@ if(isset($_POST['submit'])) {
 
 
                             <?php
-//TO DISPLAY IN THE TABLE 'MANAGE TAGS'
+//TO DISPLAY IN THE TABLE 'Manage Colors'
                             echo "<tbody id='tableBody'>";
-                             $data = "SELECT * FROM tags" ;
+                             $data = "SELECT * FROM colors" ;
                              $check=mysqli_query($conn, $data);
                              $no_of_rows = mysqli_num_rows($check);//returns the number of rows
                             
@@ -160,8 +152,7 @@ if(isset($_POST['submit'])) {
                                     
                                     echo "<tr>";
                                          echo "<td><input type='checkbox' /></td>";
-                                         echo "<td>".$row['name']."</td>";
-                                         echo "<td>".$row['tag_id']."</td>";
+                                         echo "<td>".$row['color_name']."</td>";
                                       echo "<td>";
                                             //<!-- Icons -->
                                             echo "<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
@@ -187,18 +178,12 @@ if(isset($_POST['submit'])) {
                             <fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
                                 
                                 <p>
-                                    <label>Tag Name</label>
-                                        <input class="text-input small-input" type="text" id="small-input" name="tagName" required />  <!-- Classes for input-notification: success, error, information, attention -->
+                                    <label>Color Name</label>
+                                        <input class="text-input small-input" type="text" id="small-input" name="colorName" required />  <!-- Classes for input-notification: success, error, information, attention -->
                                         <!-- SUCCESSFULL MSG -->
                                         <br /><small>Please enter tag name</small>
                                 </p>
                                 
-                                <p>
-                                    <label>Tag ID</label>
-                                    <input class="text-input medium-input datepicker" type="text" id="tagId" name="tagId" requierd /> <!--<span class="input-notification error png_bg">Error message</span>  -->
-                                    <!-- ERROR MSG -->
-                                </p>
-
                                 <!-- <p>
                                     <label>Radio buttons</label>
                                     <input type="radio" name="radio1" /> This is a radio button<br />
