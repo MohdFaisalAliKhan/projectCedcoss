@@ -8,14 +8,19 @@
 <?php
 if(isset($_POST['submit'])) {
     $colorname=isset($_POST['colorName'])?$_POST['colorName']:'';
+    $colorid=isset($_POST['colorID'])?$_POST['colorID']:'';
     //TO CHECK FOR DUPLICATE ENTRY
-    $colorNameDuplicate=mysqli_query($conn, "SELECT * FROM colors WHERE `color_name`='$colorname'"); 
+    $colorNameDuplicate=mysqli_query($conn, "SELECT * FROM colors WHERE `color_name`='$colorname'"); //to check name duplicacy
+    $colorIDDuplicate=mysqli_query($conn, "SELECT * FROM colors WHERE `color_id`='$colorid'"); //to check ID duplicacy
     if($colorNameDuplicate->num_rows>0) {
         trigger_error("This color name already exists in database", E_USER_WARNING);
     }
+    else if($colorIDDuplicate->num_rows>0) {
+        trigger_error("This color ID already exists", E_USER_WARNING);
+    }
     else {
          //AFTER CHECK FOR DUPLICACY ,NOW THE VALUES WILL BW SENT TO DATABASE
-        $sql="INSERT INTO colors(`color_name`) VALUES ('".$colorname."')" ;
+        $sql="INSERT INTO colors(`color_id`,`color_name`) VALUES ('".$colorid."','".$colorname."')" ;
         if ($conn->query($sql) === true) {
             echo "New record created successfully"; 
             echo "<span class='input-notification success png_bg'>Successful message</span>";   
@@ -106,6 +111,7 @@ if(isset($_POST['submit'])) {
                             <thead>
                                 <tr>
                                    <th><input class="check-all" type="checkbox" /></th>
+                                   <th>Color ID</th>
                                    <th>Color Name</th>
                                    <th>Action</th>
                                 </tr>
@@ -152,12 +158,13 @@ if(isset($_POST['submit'])) {
                                     
                                     echo "<tr>";
                                          echo "<td><input type='checkbox' /></td>";
+                                         echo "<td>".$row['color_id']."</td>";
                                          echo "<td>".$row['color_name']."</td>";
                                       echo "<td>";
                                             //<!-- Icons -->
-                                            echo "<a href='#' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
-                                            echo "<a href='#' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
-                                            echo "<a href='#' title='Edit Meta'><img src='resources/images/icons/hammer_screwdriver.png' alt='Edit Meta' /></a>";
+                                            
+                                            echo "<a href='deleteColors.php?ID=".$row['color_id']."' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
+                                            
                                      echo "</td>";
                                     echo "</tr>";
                                 echo "</tbody>";
@@ -178,10 +185,17 @@ if(isset($_POST['submit'])) {
                             <fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
                                 
                                 <p>
+                                    <label>Color ID</label>
+                                        <input class="text-input small-input" type="number" id="small-input" name="colorID" required />  <!-- Classes for input-notification: success, error, information, attention -->
+                                        <!-- SUCCESSFULL MSG -->
+                                       
+                                </p>
+
+                                <p>
                                     <label>Color Name</label>
                                         <input class="text-input small-input" type="text" id="small-input" name="colorName" required />  <!-- Classes for input-notification: success, error, information, attention -->
                                         <!-- SUCCESSFULL MSG -->
-                                        <br /><small>Please enter tag name</small>
+                                       
                                 </p>
                                 
                                 <!-- <p>

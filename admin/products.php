@@ -6,20 +6,41 @@ if(isset($_POST['submit'])) {
     $name=isset($_POST['nameProduct'])?$_POST['nameProduct']:'';
     $price=isset($_POST['priceProduct'])?$_POST['priceProduct']:'';
     $id=isset($_POST['idProduct'])?$_POST['idProduct']:'';
-    $image=addslashes(file_get_contents($_FILES['imageProduct']['tmp_name']));
-    $category=$_POST['categoryProduct']?$_POST['categoryProduct']:"";
+    $category=isset($_POST['categoryProduct'])?$_POST['categoryProduct']:'';
     $shortDes=isset($_POST['short'])?$_POST['short']:'';
     $longDes=isset($_POST['long'])?$_POST['long']:'';
-    
-    $sql="INSERT INTO products(`name`, `price`, `product_id`, `image`,`category_id`, `short_desc`, `long_desc`) VALUES ('".$name."', '".$price."', '".$id."', '".$image."', '".$category."', '".$shortDes."', '".$longDes."')" ;
+ 
+    $target="ProjectImages/".basename($_FILES['file']['name']);
+    $image=$_FILES['file']['name'];
+
+     $imageTemp=isset($_FILES['file']['tmp_name']);
+     
+//     $filePath="/APP(12 OCTOBER 2020)/admin/ProjectImages/";
+//     $filePath=file_get_contents($filePath.basename($imageName));
+//     $x=move_uploaded_file($imageTemp, "APP(12 OCTOBER 2020)/admin/ProjectImages/$imageName"); 
+        
+     
+     if(move_uploaded_file($_FILES['file']['tmp_name'], $target)) {
+         $primage=$_FILES['file']['name'];
+    }
+     else {
+         echo "There was some problem uploading the image to the server";
+     }
+
+
+     $sql="INSERT INTO products(`name`, `price`, `product_id`, `image`,`category_id`, `short_desc`, `long_desc`) VALUES ('".$name."', '".$price."', '".$id."', '".$primage."', '".$category."', '".$shortDes."', '".$longDes."')" ;
+         echo "Image Uploaded in database succesfully";
+
+
     if ($conn->query($sql) === true) {
         echo "New record created successfully"; 
         echo "<span class='input-notification success png_bg'>Successful message</span>";   
     }  
     else {    
-        echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
+    
 
 
 
@@ -107,9 +128,9 @@ if(isset($_POST['submit'])) {
                                    <th><input class="check-all" type="checkbox" /></th>
                                    <th>Name</th>
                                    <th>Price</th>
-                                   <th>Category</th>
-                                   <th>Image</th>
                                    <th>Product ID</th>
+                                   <th>Image</th>
+                                   <th>Category</th>
                                    <th>Short Description</th>
                                    <th>Long Description</th>
                                    <th>Action</th>
@@ -145,12 +166,17 @@ if(isset($_POST['submit'])) {
 
                             <?php
 
+                            //MANAGE PRODUCT SE
+
                             echo "<tbody id='tableBody'>";
                             $data = "SELECT * FROM products" ;
                             $check=mysqli_query($conn, $data);
                             $no_of_rows = mysqli_num_rows($check);//returns the number of rows
+
+                            //Every line is written two times because we want to fetch category name which is not in products table but is in category table.
+                            
     
-                            if ($no_of_rows > 0) {
+                            if ($no_of_rows > 0 ) {
                                 // output data of each row
                                 while ($row = mysqli_fetch_array($check)) //to fetch a row as an associative array.
                                  { 
@@ -161,13 +187,23 @@ if(isset($_POST['submit'])) {
                                         echo "<td>".$row['price']."</td>";
                                         echo "<td>".$row['product_id']."</td>";
                                         echo "<td>";
-                                        echo '<img src="data:image/jpeg;base64,'.base64_encode($row['image']).'" height="100" width="100"/>';
+                                        echo "<img src='ProjectImages/".$row['image']."' height=100 width=100 >";
                                         echo "</td>";
-                                        echo "<td>".$row['category_id']."</td>";
+                                        echo "<td>";
+                                        $data2="SELECT `name` FROM `categories` WHERE `category_id`='".$row['category_id']."'";
+                                        $check2=mysqli_query($conn, $data2);
+                                        $no_of_rows2=mysqli_num_rows($check2);
+                                        if($no_of_rows2>0) {
+                                            $c=mysqli_fetch_assoc($check2);
+                                            echo $c['name'];
+                                        }//to get the category name in the manage product table
+                                        "</td>";
+                                       
+                                        
                                         echo "<td>".$row['short_desc']."</td>";
                                         echo "<td>".$row['long_desc']."</td>";
                                 
-                                     echo "<td>";
+                                     echo "<td>";// TO DELETE AND EDIT EACH ROW
                                             //<!-- Icons -->
                                             echo "<a href='edit.php?ID=".$row['product_id']."' title='Edit'><img src='resources/images/icons/pencil.png' alt='Edit' /></a>";
                                             echo"<a href='delete.php?ID=".$row['product_id']."' title='Delete'><img src='resources/images/icons/cross.png' alt='Delete' /></a>"; 
@@ -175,10 +211,7 @@ if(isset($_POST['submit'])) {
                                     echo "</tr>";
                                     echo "</tbody>";
                                 }
-                            } else {
-                                echo "Record not found..";
-                            }  
-                             
+                            } 
                             ?>
                          </table>
                         
@@ -186,7 +219,7 @@ if(isset($_POST['submit'])) {
                     
                     <div class="tab-content" id="tab2">
                     
-                        <form action="#" method="post">
+                        <form action="#" method="POST" enctype="multipart/form-data">
                             
                             <fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
                                 
@@ -210,7 +243,7 @@ if(isset($_POST['submit'])) {
 
                                 <p>
                                     <label>Product Image</label>
-                                    <input style="background-color:white;" class="text-input large-input" type="file" accept="image/*" id="image" name="imageProduct" required> 
+                                    <input style="background-color:white;" class="text-input large-input" type="file"  id="imageID" name="file" required> 
                                 </p>
                                 
                                  <p>
@@ -242,7 +275,7 @@ if(isset($_POST['submit'])) {
                                         $no_of_rows=mysqli_num_rows($query);
                                         if($no_of_rows>0) {
                                             while ($row = mysqli_fetch_array($query)) {
-                                                echo '<option value="1">'.$row['name'].'</option>';
+                                                echo '<option value='.$row['category_id'].'>'.$row['name'].'</option>';
                                                 echo $row['name'];
                                             }
                                     }

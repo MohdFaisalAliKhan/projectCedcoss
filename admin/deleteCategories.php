@@ -1,6 +1,6 @@
 <?php
 include('configDatabase2.php');
-if(isset($_GET['ID'])){
+if(isset($_GET['ID'])) {
     $courseID = $_GET['ID'];
     $sql_delete = "DELETE FROM categories WHERE `category_id` = $courseID";        
     $result = mysqli_query($conn ,$sql_delete);
