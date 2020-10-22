@@ -168,7 +168,7 @@ if(isset($_POST['submit'])) {
 
                             //MANAGE PRODUCT SE
 
-                            echo "<tbody id='tableBody'>";
+                            echo "<tbody id='tableBody' style='table-layout: fixed;'>";
                             $data = "SELECT * FROM products" ;
                             $check=mysqli_query($conn, $data);
                             $no_of_rows = mysqli_num_rows($check);//returns the number of rows
@@ -201,7 +201,7 @@ if(isset($_POST['submit'])) {
                                        
                                         
                                         echo "<td>".$row['short_desc']."</td>";
-                                        echo "<td>".$row['long_desc']."</td>";
+                                        echo "<td>".substr($row['long_desc'], 0, 30).'...'. "</td>";
                                 
                                      echo "<td>";// TO DELETE AND EDIT EACH ROW
                                             //<!-- Icons -->
@@ -260,12 +260,6 @@ if(isset($_POST['submit'])) {
                                     }
                                     ?>
                                 </p> 
-                                
-                                <!-- <p>
-                                    <label>Radio buttons</label>
-                                    <input type="radio" name="radio1" /> This is a radio button<br />
-                                    <input type="radio" name="radio2" /> This is another radio button
-                                </p> --> 
                                 
                                 <p>
                                     <label>Categoty</label>              
