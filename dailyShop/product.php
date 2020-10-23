@@ -1,4 +1,19 @@
 <?php include('configDatabase2.php'); ?>
+<?php  $results_per_page=5; 
+//no of products shown on every page.
+    $data = "SELECT * FROM `products`" ;
+    $result=mysqli_query($conn, $data);
+    $no_of_results = mysqli_num_rows($result); //returns the number of rows
+                              ///////////////////////////////////////////////////////////////////////////////
+    $no_of_pages=ceil($no_of_results/$results_per_page);
+    if(!(isset($_GET['page']))) {
+        $page=1;
+    } else {
+        $page=$_GET['page'];
+    }
+
+    $this_page_first_result=($page-1)*$results_per_page;
+    ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -373,7 +388,7 @@
               
                 <!-- start single product item -->
                 <?php
-                $data = "SELECT * FROM products" ;
+                $data = "SELECT * FROM products LIMIT $this_page_first_result, $results_per_page" ;
                 $check=mysqli_query($conn, $data);
                 $no_of_rows = mysqli_num_rows($check);
                 if ($no_of_rows > 0 ) {
@@ -383,12 +398,12 @@
                 echo "<ul class='aa-product-catg'>";
                 echo "<li>";
                 echo "<figure>";
-                echo  "<a class='aa-product-img' href='#'><img src='../admin/ProjectImages/".$row['image']."' alt='polo shirt img'></a>";
+                echo  "<a class='aa-product-img' href='#'><img src='../admin/ProjectImages/".$row['image']."' height:'200' width='200' alt='polo shirt img'></a>";
                 echo  "<a class='aa-add-card-btn'href='#'><span class='fa fa-shopping-cart'></span>Add To Cart</a>";
                 echo  "<figcaption>";
                 echo  "<h4 class='aa-product-title'><a href='#'>".$row['name']."</a></h4>";
-                echo  "<span class='aa-product-price'>".$row['price']."</span><span class='aa-product-price'><del>$65.50</del></span>";
-                echo  "<p class='aa-product-descrip'>something</p>";
+                echo  "<span class='aa-product-price'>$".$row['price']."</span>";
+                echo  "<p class='aa-product-descrip'>".$row['short_desc']."</p>";
                 echo  "</figcaption>";
                 echo  "</figure>";                         
                 echo  "<div class='aa-product-hvr-content'>";
@@ -486,27 +501,21 @@
               </div>
               <!-- / quick view modal -->   
             </div>
-            <div class="aa-product-catg-pagination">
-              <nav>
-                <ul class="pagination">
-                  <li>
-                    <a href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">4</a></li>
-                  <li><a href="#">5</a></li>
-                  <li>
-                    <a href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+            <?php
+            echo "<div class='aa-product-catg-pagination'>";
+              echo "<nav>";
+                echo "<ul class='pagination'>";
+                  
+                    for($page=1;$page<=$no_of_pages;$page++) {
+                        echo "<li>";
+                        echo "<a href='product.php?page=".$page." '>".$page."</a>";
+                        echo "</li>";
+                    }
+                    
+                echo "</ul>";
+              echo "</nav>";
+            echo "</div>";
+            ?>
           </div>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
