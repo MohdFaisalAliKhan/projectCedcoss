@@ -1,6 +1,21 @@
 <?php include('header.php'); ?>
 <?php include('sidebar.php'); ?>
 <?php include('configDatabase2.php'); ?>
+<?php  $results_per_page=5; 
+//no of products shown on every page.
+    $data = "SELECT * FROM `products`" ;
+    $result=mysqli_query($conn, $data);
+    $no_of_results = mysqli_num_rows($result); //returns the number of rows
+                              ///////////////////////////////////////////////////////////////////////////////
+    $no_of_pages=ceil($no_of_results/$results_per_page);
+    if(!(isset($_GET['page']))) {
+        $page=1;
+    } else {
+        $page=$_GET['page'];
+    }
+
+    $this_page_first_result=($page-1)*$results_per_page;
+    ?>
 <?php
 if(isset($_POST['submit'])) {
     $name=isset($_POST['nameProduct'])?$_POST['nameProduct']:'';
@@ -15,9 +30,7 @@ if(isset($_POST['submit'])) {
 
      $imageTemp=isset($_FILES['file']['tmp_name']);
      
-//     $filePath="/APP(12 OCTOBER 2020)/admin/ProjectImages/";
-//     $filePath=file_get_contents($filePath.basename($imageName));
-//     $x=move_uploaded_file($imageTemp, "APP(12 OCTOBER 2020)/admin/ProjectImages/$imageName"); 
+
         
      
      if(move_uploaded_file($_FILES['file']['tmp_name'], $target)) {
@@ -40,10 +53,6 @@ if(isset($_POST['submit'])) {
             echo "Error: " . $sql . "<br>" . $conn->error;
     }
 }
-    
-
-
-
 
 ?>
         
@@ -120,10 +129,8 @@ if(isset($_POST['submit'])) {
                                 This is a Fontent Box. You can put whatever you want in it. By the way, you can close this notification with the top-right cross.
                             </div>
                         </div>
-                        
                         <table>
-                            
-                            <thead>
+                         <thead>
                                 <tr>
                                    <th><input class="check-all" type="checkbox" /></th>
                                    <th>Name</th>
@@ -141,7 +148,7 @@ if(isset($_POST['submit'])) {
                             <tfoot>
                                 <tr>
                                     <td colspan="6">
-                                        <div class="bulk-actions align-left">
+                                        <!-- <div class="bulk-actions align-left">
                                             <select name="dropdown">
                                                 <option value="option1">Choose an action...</option>
                                                 <option value="option2">Edit</option>
@@ -149,15 +156,16 @@ if(isset($_POST['submit'])) {
                                             </select>
                                             <a class="button" href="#">Apply to selected</a>
                                         </div>
-                                        
+                                        -->
                                         <div class="pagination">
-                                            <a href="#" title="First Page">&laquo; First</a><a href="#" title="Previous Page">&laquo; Previous</a>
-                                            <a href="#" class="number" title="1">1</a>
-                                            <a href="#" class="number" title="2">2</a>
-                                            <a href="#" class="number current" title="3">3</a>
-                                            <a href="#" class="number" title="4">4</a>
-                                            <a href="#" title="Next Page">Next &raquo;</a><a href="#" title="Last Page">Last &raquo;</a>
-                                        </div> <!-- End .pagination -->
+                                            
+                                            <?php
+                                             for($page=1;$page<=$no_of_pages;$page++) {
+                                                echo "<a href='products.php?page=".$page." '>".$page."</a>";
+                                            }
+                                            ?>
+                                            
+                                        </div> 
                                         <div class="clear"></div>
                                     </td>
                                 </tr>
@@ -165,23 +173,19 @@ if(isset($_POST['submit'])) {
 
 
                             <?php
-
-                            //MANAGE PRODUCT SE
-
+                            //MANAGE PRODUCT SECTION.
                             echo "<tbody id='tableBody' style='table-layout: fixed;'>";
-                            $data = "SELECT * FROM products" ;
-                            $check=mysqli_query($conn, $data);
-                            $no_of_rows = mysqli_num_rows($check);//returns the number of rows
+                             
 
-                            //Every line is written two times because we want to fetch category name which is not in products table but is in category table.
-                            
-    
-                            if ($no_of_rows > 0 ) {
-                                // output data of each row
-                                while ($row = mysqli_fetch_array($check)) //to fetch a row as an associative array.
-                                 { 
-                                    
-                                    echo "<tr>";
+                            $sql3="SELECT * FROM `products` LIMIT $this_page_first_result, $results_per_page ";
+                            $result3=mysqli_query($conn, $sql3);
+                            // if (!$result3) {
+                            //     printf("Error: %s\n", mysqli_error($conn));
+                            //     exit();
+                            // }
+                            while ($row = mysqli_fetch_array($result3)) //to fetch a row as an associative array.
+                            {
+                                echo "<tr>";
                                         echo "<td><input type='checkbox' /></td>";
                                         echo "<td>".$row['name']."</td>";
                                         echo "<td>".$row['price']."</td>";
@@ -198,8 +202,6 @@ if(isset($_POST['submit'])) {
                                             echo $c['name'];
                                         }//to get the category name in the manage product table
                                         "</td>";
-                                       
-                                        
                                         echo "<td>".$row['short_desc']."</td>";
                                         echo "<td>".substr($row['long_desc'], 0, 30).'...'. "</td>";
                                 
@@ -210,8 +212,8 @@ if(isset($_POST['submit'])) {
                                      echo "</td>";
                                     echo "</tr>";
                                     echo "</tbody>";
-                                }
                             } 
+                           
                             ?>
                          </table>
                         
